@@ -15,8 +15,10 @@ This document maintains a list of key libraries used in the Nexus Commerce Platf
 ## Upcoming Libraries (Planned)
 
 ### [MassTransit](https://masstransit.io/)
-**Planned For:** Phase 2
-**Purpose:** A free, open-source distributed application framework for .NET. We will use it to handle message bus communication (RabbitMQ/Azure Service Bus) easily.
+**Version:** 8.3.4
+**Used In:** `EventBus` (Shared Library), `Catalog.API`
+**Purpose:** a free, open-source distributed application framework for .NET. We use it to abstract away the complexity of RabbitMQ.
+- **`MassTransit.RabbitMQ`**: The specific transport package for RabbitMQ.
 
 ### [Polly](https://www.thepollyproject.org/)
 **Planned For:** Phase 4
