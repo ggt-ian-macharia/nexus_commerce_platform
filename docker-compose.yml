@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  yarp-gateway:
+    image: ${DOCKER_REGISTRY-}yarpgateway
+    build:
+      context: .
+      dockerfile: src/ApiGateways/YarpGateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      - catalog-api
+
+  catalog-api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
