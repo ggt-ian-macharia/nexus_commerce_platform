@@ -5,10 +5,12 @@
 Run these commands to install the necessary packages:
 
 ```powershell
-dotnet add src/Services/Identity/Identity.API/Identity.API.csproj package Microsoft.AspNetCore.Identity.EntityFrameworkCore
-dotnet add src/Services/Identity/Identity.API/Identity.API.csproj package Microsoft.AspNetCore.Authentication.JwtBearer
-dotnet add src/Services/Identity/Identity.API/Identity.API.csproj package Microsoft.EntityFrameworkCore.SqlServer
-dotnet add src/Services/Identity/Identity.API/Identity.API.csproj package Microsoft.EntityFrameworkCore.Tools
+dotnet add src/Services/Identity/Identity.API/Identity.API.csproj package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 9.0.0
+dotnet add src/Services/Identity/Identity.API/Identity.API.csproj package Microsoft.AspNetCore.Authentication.JwtBearer --version 9.0.0
+dotnet add src/Services/Identity/Identity.API/Identity.API.csproj package Microsoft.EntityFrameworkCore.SqlServer --version 9.0.0
+dotnet add src/Services/Identity/Identity.API/Identity.API.csproj package Microsoft.EntityFrameworkCore.Tools --version 9.0.0
+dotnet add src/Services/Identity/Identity.API/Identity.API.csproj package AutoMapper.Extensions.Microsoft.DependencyInjection --version 12.0.1
+dotnet add src/Services/Identity/Identity.API/Identity.API.csproj package FluentValidation.AspNetCore --version 11.3.0
 ```
 
 ## Database Migration

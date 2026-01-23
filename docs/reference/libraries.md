@@ -20,6 +20,20 @@ This document maintains a list of key libraries used in the Nexus Commerce Platf
 **Purpose:** a free, open-source distributed application framework for .NET. We use it to abstract away the complexity of RabbitMQ.
 - **`MassTransit.RabbitMQ`**: The specific transport package for RabbitMQ.
 
+### [AutoMapper](https://automapper.org/)
+**Version:** 12.0.1
+**Used In:** `Identity.API`
+**Purpose:** Object-to-object mapping library that eliminates tedious manual mapping code. We use it to map between entities and DTOs.
+- Configured via `Profile` classes (e.g., `AuthProfile`)
+
+### [FluentValidation](https://fluentvalidation.net/)
+**Version:** 11.3.0
+**Used In:** `Identity.API`
+**Purpose:** A popular validation library for .NET that uses a fluent interface and lambda expressions for building strongly-typed validation rules.
+- Configured via `AbstractValidator<T>` classes (e.g., `RegisterRequestValidator`)
+
+## Upcoming Libraries (Planned)
+
 ### [Polly](https://www.thepollyproject.org/)
 **Planned For:** Phase 4
 **Purpose:** A .NET resilience and transient-fault-handling library. We will use it to implement retries, circuit breakers, and timeouts for inter-service HTTP calls.

@@ -62,6 +62,18 @@ Links one project to another (e.g., Catalog API needs EventBus).
 dotnet add src/Services/Catalog/Catalog.API/Catalog.API.csproj reference src/BuildingBlocks/EventBus/EventBus.csproj
 ```
 
+### Add AutoMapper
+Installs AutoMapper with ASP.NET Core integration.
+```bash
+dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection --version 13.0.1
+```
+
+### Add FluentValidation
+Installs FluentValidation with ASP.NET Core integration.
+```bash
+dotnet add package FluentValidation.AspNetCore --version 11.3.0
+```
+
 ## Build & Run
 
 ### Build the Solution
