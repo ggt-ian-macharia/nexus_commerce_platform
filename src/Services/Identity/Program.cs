@@ -22,6 +22,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.ApplyMigration();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

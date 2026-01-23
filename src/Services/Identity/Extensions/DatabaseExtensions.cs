@@ -16,4 +16,18 @@ public static class DatabaseExtensions
 
         return services;
     }
+    
+    public static void ApplyMigration(this IApplicationBuilder app)
+    {
+        using (var scope = app.ApplicationServices.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
+        }
+    }
 }

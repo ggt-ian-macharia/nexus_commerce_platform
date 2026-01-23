@@ -22,6 +22,7 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:8080
       - EventBusSettings__HostAddress=rabbitmq
+      - ConnectionStrings__DefaultConnection=Host=postgres-catalog;Database=nexus_catalog;Username=postgres;Password=postgres
     depends_on:
       - rabbitmq
       - postgres-catalog

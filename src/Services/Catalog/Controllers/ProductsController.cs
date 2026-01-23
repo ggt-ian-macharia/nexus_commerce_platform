@@ -1,41 +1,35 @@
 using AutoMapper;
-using Catalog.Data;
 using Catalog.DTOs;
 using Catalog.Models;
+using Catalog.Services.Product;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class ProductsController : ControllerBase
 {
-    private readonly CatalogDbContext _context;
+    private readonly IProductService _productService;
     private readonly IMapper _mapper;
 
-    public ProductsController(CatalogDbContext context, IMapper mapper)
+    public ProductsController(IProductService productService, IMapper mapper)
     {
-        _context = context;
-        _mapper = mapper;
+        _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
     {
-        var products = await _context.Products
-            .Include(p => p.Category)
-            .ToListAsync();
-
+        var products = await _productService.GetAllProductsAsync();
         return Ok(_mapper.Map<List<ProductDto>>(products));
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductDto>> GetProduct(int id)
     {
-        var product = await _context.Products
-            .Include(p => p.Category)
-            .FirstOrDefaultAsync(p => p.Id == id);
+        var product = await _productService.GetProductByIdAsync(id);
 
         if (product == null)
         {
@@ -48,13 +42,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ProductDto>> CreateProduct(CreateProductRequest request)
     {
-        var product = _mapper.Map<Product>(request);
-        
-        _context.Products.Add(product);
-        await _context.SaveChangesAsync();
-
-        // Reload with category
-        await _context.Entry(product).Reference(p => p.Category).LoadAsync();
+        var product = await _productService.CreateProductAsync(request);
 
         return CreatedAtAction(
             nameof(GetProduct),
@@ -62,37 +50,31 @@ public class ProductsController : ControllerBase
             _mapper.Map<ProductDto>(product));
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateProduct(int id, UpdateProductRequest request)
     {
-        var product = await _context.Products.FindAsync(id);
-
-        if (product == null)
+        try
+        {
+            await _productService.UpdateProductAsync(id, request);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
         {
             return NotFound();
         }
-
-        _mapper.Map(request, product);
-        product.UpdatedAt = DateTime.UtcNow;
-
-        await _context.SaveChangesAsync();
-
-        return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
-        var product = await _context.Products.FindAsync(id);
-
-        if (product == null)
+        try
+        {
+            await _productService.DeleteProductAsync(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
         {
             return NotFound();
         }
-
-        _context.Products.Remove(product);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
     }
 }
