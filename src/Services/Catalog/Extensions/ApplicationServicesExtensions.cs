@@ -1,4 +1,4 @@
-namespace Catalog.API.Extensions;
+namespace Catalog.Extensions;
 
 public static class ApplicationServicesExtensions
 {

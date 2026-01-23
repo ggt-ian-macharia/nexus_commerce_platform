@@ -1,4 +1,4 @@
-namespace Catalog.API.DTOs;
+namespace Catalog.DTOs;
 
 public record UpdateProductRequest
 {

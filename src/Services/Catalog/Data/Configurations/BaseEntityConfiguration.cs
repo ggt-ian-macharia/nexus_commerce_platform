@@ -1,8 +1,8 @@
-using Catalog.API.Models;
+using Catalog.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Catalog.API.Data.Configurations;
+namespace Catalog.Data.Configurations;
 
 public class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> where T : BaseEntity
 {

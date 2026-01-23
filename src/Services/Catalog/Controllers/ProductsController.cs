@@ -1,11 +1,11 @@
 using AutoMapper;
-using Catalog.API.Data;
-using Catalog.API.DTOs;
-using Catalog.API.Models;
+using Catalog.Data;
+using Catalog.DTOs;
+using Catalog.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.API.Controllers;
+namespace Catalog.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

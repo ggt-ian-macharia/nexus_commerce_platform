@@ -1,7 +1,7 @@
-using Identity.API.Models;
+using Identity.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace Identity.API.Extensions;
+namespace Identity.Extensions;
 
 public static class IdentityExtensions
 {

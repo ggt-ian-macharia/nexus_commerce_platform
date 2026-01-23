@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Identity.API.DTOs;
+namespace Identity.DTOs;
 
 public record LoginRequest
 {

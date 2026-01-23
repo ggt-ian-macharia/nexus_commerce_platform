@@ -1,7 +1,7 @@
-using Catalog.API.Data;
+using Catalog.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.API.Extensions;
+namespace Catalog.Extensions;
 
 public static class DatabaseExtensions
 {

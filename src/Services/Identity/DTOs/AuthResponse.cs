@@ -1,4 +1,4 @@
-namespace Identity.API.DTOs;
+namespace Identity.DTOs;
 
 public record AuthResponse
 {

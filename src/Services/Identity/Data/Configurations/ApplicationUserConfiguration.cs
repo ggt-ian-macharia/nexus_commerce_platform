@@ -1,8 +1,8 @@
-using Identity.API.Models;
+using Identity.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Identity.API.Data.Configurations;
+namespace Identity.Data.Configurations;
 
 public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 {

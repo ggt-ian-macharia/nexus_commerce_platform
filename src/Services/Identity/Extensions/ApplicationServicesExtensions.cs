@@ -1,6 +1,6 @@
-using Identity.API.Services;
+using Identity.Services;
 
-namespace Identity.API.Extensions;
+namespace Identity.Extensions;
 
 public static class ApplicationServicesExtensions
 {

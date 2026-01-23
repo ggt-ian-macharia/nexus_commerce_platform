@@ -1,9 +1,9 @@
-using Identity.API.Data;
+using Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Identity.API.Models;
+using Identity.Models;
 
-namespace Identity.API.Extensions;
+namespace Identity.Extensions;
 
 public static class DatabaseExtensions
 {

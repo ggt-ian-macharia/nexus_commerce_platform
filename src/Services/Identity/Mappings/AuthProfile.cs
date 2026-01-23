@@ -1,8 +1,8 @@
 using AutoMapper;
-using Identity.API.DTOs;
-using Identity.API.Models;
+using Identity.DTOs;
+using Identity.Models;
 
-namespace Identity.API.Mappings;
+namespace Identity.Mappings;
 
 public class AuthProfile : Profile
 {

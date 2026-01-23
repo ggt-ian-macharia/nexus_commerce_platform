@@ -1,8 +1,8 @@
 using AutoMapper;
-using Catalog.API.DTOs;
-using Catalog.API.Models;
+using Catalog.DTOs;
+using Catalog.Models;
 
-namespace Catalog.API.Mappings;
+namespace Catalog.Mappings;
 
 public class ProductProfile : Profile
 {

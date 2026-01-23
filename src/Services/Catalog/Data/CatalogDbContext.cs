@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
-using Catalog.API.Models;
+using Catalog.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.API.Data;
+namespace Catalog.Data;
 
 public class CatalogDbContext : DbContext
 {
@@ -12,6 +12,15 @@ public class CatalogDbContext : DbContext
 
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Category> Categories => Set<Category>();
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        
+        // Suppress warning about pending model changes (caused by dynamic query filters)
+        optionsBuilder.ConfigureWarnings(warnings => 
+            warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,10 +1,10 @@
-using Identity.API.DTOs;
-using Identity.API.Models;
-using Identity.API.Services;
+using Identity.DTOs;
+using Identity.Models;
+using Identity.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Identity.API.Controllers;
+namespace Identity.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

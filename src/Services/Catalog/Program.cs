@@ -1,5 +1,4 @@
-using Catalog.API.Extensions;
-using EventBus;
+using Catalog.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +10,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddValidation();
-builder.Services.AddEventBus(builder.Configuration);
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-namespace Catalog.API.Models;
+namespace Catalog.Models;
 
 public abstract class BaseEntity
 {
