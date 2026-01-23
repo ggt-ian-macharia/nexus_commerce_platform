@@ -1,4 +1,4 @@
-using Catalog.Extensions;
+using Notification.Services;
 using EventBus;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,12 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-// Configure custom services via extension methods
-builder.Services.AddDatabase(builder.Configuration);
-builder.Services.AddRepositories();
-builder.Services.AddApplicationServices();
-builder.Services.AddValidation();
-builder.Services.AddEventBus(builder.Configuration);
+// Add application services
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
+// Add EventBus with consumer
+builder.Services.AddEventBus(builder.Configuration, typeof(Program).Assembly);
 
 var app = builder.Build();
 

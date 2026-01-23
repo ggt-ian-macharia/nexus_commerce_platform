@@ -1,7 +1,5 @@
 using Identity.DTOs;
-using Identity.Models;
-using Identity.Services;
-using Microsoft.AspNetCore.Identity;
+using Identity.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.Controllers;
@@ -10,64 +8,36 @@ namespace Identity.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly TokenService _tokenService;
+    private readonly IAuthService _authService;
 
-    public AuthController(UserManager<ApplicationUser> userManager, TokenService tokenService)
+    public AuthController(IAuthService authService)
     {
-        _userManager = userManager;
-        _tokenService = tokenService;
+        _authService = authService;
     }
 
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest request)
     {
-        var user = new ApplicationUser
-        {
-            UserName = request.Email,
-            Email = request.Email,
-            FirstName = request.FirstName,
-            LastName = request.LastName
-        };
+        var response = await _authService.RegisterAsync(request);
 
-        var result = await _userManager.CreateAsync(user, request.Password);
-
-        if (!result.Succeeded)
+        if (response == null)
         {
-            return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
+            return BadRequest(new { error = "Registration failed" });
         }
 
-        var token = _tokenService.GenerateToken(user);
-
-        return Ok(new AuthResponse
-        {
-            Token = token,
-            Email = user.Email!,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            ExpiresAt = DateTime.UtcNow.AddHours(24)
-        });
+        return Ok(response);
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
+        var response = await _authService.LoginAsync(request);
 
-        if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
+        if (response == null)
         {
             return Unauthorized();
         }
 
-        var token = _tokenService.GenerateToken(user);
-
-        return Ok(new AuthResponse
-        {
-            Token = token,
-            Email = user.Email!,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            ExpiresAt = DateTime.UtcNow.AddHours(24)
-        });
+        return Ok(response);
     }
 }
