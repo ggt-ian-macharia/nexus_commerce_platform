@@ -8,6 +8,9 @@ public static class ApplicationServicesExtensions
     {
         services.AddScoped<TokenService>();
         
+        // Add AutoMapper
+        services.AddAutoMapper(typeof(Program).Assembly);
+        
         return services;
     }
 }

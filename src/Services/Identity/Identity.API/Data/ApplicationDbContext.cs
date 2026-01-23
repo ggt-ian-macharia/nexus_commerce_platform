@@ -15,11 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
         
-        // Customize Identity tables if needed
-        builder.Entity<ApplicationUser>(entity =>
-        {
-            entity.Property(e => e.FirstName).HasMaxLength(100);
-            entity.Property(e => e.LastName).HasMaxLength(100);
-        });
+        // Apply all IEntityTypeConfiguration implementations from this assembly
+        builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 }

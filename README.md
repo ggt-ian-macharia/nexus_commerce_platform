@@ -89,6 +89,7 @@ The response includes a JWT token to use in the `Authorization: Bearer <token>` 
 See the `docs/` folder for detailed guides:
 - [Architecture](docs/architecture.md)
 - [Roadmap](docs/roadmap.md)
+- [Identity Architecture & Learning Path](docs/identity-architecture.md)
 - [CLI References](docs/reference/cli-commands.md)
 - [Identity Setup](docs/reference/identity-setup.md)
 - [RabbitMQ Setup](docs/reference/setup-rabbitmq.md)
