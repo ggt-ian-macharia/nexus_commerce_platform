@@ -8,8 +8,10 @@ builder.Services.AddOpenApi();
 
 // Configure custom services via extension methods
 builder.Services.AddDatabase(builder.Configuration);
+builder.Services.AddRepositories();
 builder.Services.AddApplicationServices();
 builder.Services.AddValidation();
+builder.Services.AddEventBus(builder.Configuration);
 
 var app = builder.Build();
 

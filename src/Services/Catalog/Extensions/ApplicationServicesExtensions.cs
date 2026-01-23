@@ -7,6 +7,9 @@ public static class ApplicationServicesExtensions
         // Add AutoMapper
         services.AddAutoMapper(typeof(Program).Assembly);
         
+        // Add Services
+        services.AddScoped<Services.Product.IProductService, Services.Product.ProductService>();
+        
         return services;
     }
 }

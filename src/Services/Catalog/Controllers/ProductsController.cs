@@ -62,7 +62,7 @@ public class ProductsController : ControllerBase
             _mapper.Map<ProductDto>(product));
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateProduct(int id, UpdateProductRequest request)
     {
         var product = await _context.Products.FindAsync(id);
