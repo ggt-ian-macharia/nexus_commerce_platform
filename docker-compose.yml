@@ -12,6 +12,7 @@ services:
       - ASPNETCORE_URLS=http://+:8080
     depends_on:
       - catalog-api
+      - identity-api
 
   catalog-api:
     image: ${DOCKER_REGISTRY-}catalogapi
@@ -20,6 +21,18 @@ services:
       dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
     ports:
       - "5000:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      - rabbitmq
+
+  identity-api:
+    image: ${DOCKER_REGISTRY-}identityapi
+    build:
+      context: .
+      dockerfile: src/Services/Identity/Identity.API/Dockerfile
+    ports:
+      - "5001:8080"
     environment:
       - ASPNETCORE_URLS=http://+:8080
     depends_on:
