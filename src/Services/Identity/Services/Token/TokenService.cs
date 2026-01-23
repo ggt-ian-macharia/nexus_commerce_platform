@@ -18,7 +18,7 @@ public class TokenService
     public string GenerateToken(ApplicationUser user)
     {
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? "YourSuperSecretKeyHere_MustBeAtLeast32CharactersLong!"));
+            Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? "2c75ef15acd4c07b6c111039b29440afae5c4ccc47db8fa1ad241033107007d2"));
 
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
