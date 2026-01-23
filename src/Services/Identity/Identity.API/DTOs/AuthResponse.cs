@@ -1,10 +1,10 @@
 namespace Identity.API.DTOs;
 
-public class AuthResponse
+public record AuthResponse
 {
-    public string Token { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
-    public DateTime ExpiresAt { get; set; }
+    public string Token { get; init; } = string.Empty;
+    public string Email { get; init; } = string.Empty;
+    public string? FirstName { get; init; }
+    public string? LastName { get; init; }
+    public DateTime ExpiresAt { get; init; }
 }
