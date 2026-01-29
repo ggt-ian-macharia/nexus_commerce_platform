@@ -1,20 +1,31 @@
-using Identity.Extensions;
+using EventBus;
+using Order.Data;
+using Order.Extensions;
+using Order.Services;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 builder.Services.AddOpenApi();
 
-// Configure custom services via extension methods
+// Add Database
 builder.Services.AddDatabase(builder.Configuration);
-builder.Services.AddIdentityServices();
-builder.Services.AddJwtAuthentication(builder.Configuration);
-builder.Services.AddApplicationServices();
-builder.Services.AddValidation();
 
-// Add Health Checks
+// Add repositories and services
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+// Add Event Bus
+builder.Services.AddEventBus(builder.Configuration);
+
+// Add Health Checks  
 builder.Services.AddHealthChecks()
     .AddNpgSql(
         builder.Configuration.GetConnectionString("DefaultConnection")!,
@@ -29,12 +40,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
+// Apply database migrations
 app.ApplyMigration();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseHttpsRedirection();
 
 // Health Check Endpoints
 app.MapHealthChecks("/health/live", new HealthCheckOptions

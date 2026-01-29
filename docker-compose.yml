@@ -69,6 +69,21 @@ services:
     depends_on:
       - redis
 
+  order-api:
+    image: ${DOCKER_REGISTRY-}orderapi
+    build:
+      context: .
+      dockerfile: src/Services/Order/Dockerfile
+    ports:
+      - "5004:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres-order;Database=nexus_order;Username=postgres;Password=postgres
+      - EventBusSettings__HostAddress=rabbitmq
+    depends_on:
+      - postgres-order
+      - rabbitmq
+
   postgres-catalog:
     image: postgres:16-alpine
     environment:
@@ -91,6 +106,17 @@ services:
     volumes:
       - postgres_identity_data:/var/lib/postgresql/data
 
+  postgres-order:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=nexus_order
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_order_data:/var/lib/postgresql/data
+
   rabbitmq:
     image: rabbitmq:3-management
     ports:
@@ -106,4 +132,5 @@ services:
 volumes:
   postgres_catalog_data:
   postgres_identity_data:
+  postgres_order_data:
   redis_data:

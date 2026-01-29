@@ -12,7 +12,9 @@ public static class DatabaseExtensions
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection") 
-                ?? "Host=localhost;Database=nexus_identity;Username=postgres;Password=postgres"));
+                ?? "Host=localhost;Database=nexus_identity;Username=postgres;Password=postgres")
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors());
 
         return services;
     }

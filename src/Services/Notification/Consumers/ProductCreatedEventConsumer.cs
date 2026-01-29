@@ -22,7 +22,7 @@ public class ProductCreatedEventConsumer : IConsumer<ProductCreatedEvent>
         var message = context.Message;
 
         _logger.LogInformation(
-            "🔔 Received ProductCreatedEvent: ID={Id}, Name='{Name}', Price={Price}",
+            "Received ProductCreatedEvent: ID={Id}, Name='{Name}', Price={Price}",
             message.Id, message.Name, message.Price);
 
         try

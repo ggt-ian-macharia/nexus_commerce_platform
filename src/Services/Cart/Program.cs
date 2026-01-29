@@ -1,4 +1,5 @@
 using Cart.Data;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,13 @@ builder.Services.AddStackExchangeRedisCache(options =>
 // General Configuration
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
+// Add Health Checks
+builder.Services.AddHealthChecks()
+    .AddRedis(
+        builder.Configuration.GetValue<string>("ConnectionStrings:Redis")!,
+        name: "redis",
+        tags: new[] { "ready", "cache" });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +35,17 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+// Health Check Endpoints
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+    Predicate = _ => false
+});
+
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready")
+});
 
 app.MapControllers();
 

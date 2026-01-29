@@ -33,15 +33,16 @@ graph TD
 
 ## 2. Service Catalogue
 
-| Service | Responsibility | Database | Patterns |
-|---------|----------------|----------|----------|
-| **Identity** | AuthN/AuthZ, Token Issuance, User Profiles | SQL Server | OAuth2, OIDC |
-| **Catalog** | Products, Categories, Brands | PostgreSQL | CQRS, Read-Replicas |
-| **Cart** | Shopping Cart, Session State | Redis | Key-Value Store, TTL |
-| **Order** | Order Lifecycle, Saga Orchestration | SQL Server | Event Sourcing, Saga, Outbox |
-| **Payment** | Payment Processing, Refund Handling | MongoDB | Adapter Pattern, Idempotency |
-| **Inventory**| Stock Levels, Reservations | SQL Server | Distributed Locking, Optimistic Concurrency |
-| **Search** | Product Search, Filtering, Facets | ElasticSearch | Event-carried State Transfer |
+| Service | Responsibility | Database | Patterns | Status |
+|---------|----------------|----------|----------|--------|
+| **Identity** | AuthN/AuthZ, Token Issuance, User Profiles | PostgreSQL | ASP.NET Core Identity, JWT | ✅ Implemented |
+| **Catalog** | Products, Categories, Brands | PostgreSQL | CQRS, Event Publishing | ✅ Implemented |
+| **Cart** | Shopping Cart, Session State | Redis | Key-Value Store, TTL | ✅ Implemented |
+| **Notification** | Email/SMS Notifications, Event Consumer | N/A (Stateless) | Event-Driven, Consumer Pattern | ✅ Implemented |
+| **Order** | Order Lifecycle, Saga Orchestration | PostgreSQL | Event Sourcing, Saga, Outbox | 🚧 In Progress |
+| **Payment** | Payment Processing, Refund Handling | MongoDB | Adapter Pattern, Idempotency | 📋 Planned |
+| **Inventory**| Stock Levels, Reservations | PostgreSQL | Distributed Locking, Optimistic Concurrency | 📋 Planned |
+| **Search** | Product Search, Filtering, Facets | ElasticSearch | Event-carried State Transfer | 📋 Planned |
 
 ## 3. Communication Strategy
 

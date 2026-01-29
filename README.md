@@ -1,6 +1,6 @@
 # Nexus Commerce Platform
 
-A comprehensive microservices-based e-commerce platform built with .NET 8, demonstrating advanced distributed system patterns.
+A comprehensive microservices-based e-commerce platform built with .NET 9, demonstrating advanced distributed system patterns.
 
 ## Project Structure
 
@@ -10,9 +10,10 @@ The project follows a modular microservices architecture:
     - **`YarpGateway`**: A reverse proxy using [YARP](https://microsoft.github.io/reverse-proxy/) to route requests to backend services.
 - **`src/Services`**: Autonomous business components.
     - **`Catalog`**: Manages products, categories, and inventory reference.
-        - **`Catalog.API`**: The Web API project.
-    - **`Identity`**: Handles authentication and authorization.
-        - **`Identity.API`**: JWT-based auth service using ASP.NET Core Identity.
+    - **`Cart`**: Shopping cart with Redis-based session storage.
+    - **`Order`**: Order management and orchestration.
+    - **`Identity`**: Handles authentication and authorization using ASP.NET Core Identity.
+    - **`Notification`**: Event-driven notification service for system events.
 - **`src/BuildingBlocks`**: Shared libraries and cross-cutting concerns.
     - **`EventBus`**: Abstractions/implementations for asynchronous messaging (MassTransit/RabbitMQ).
 
@@ -27,12 +28,14 @@ You might notice paths like `src/Services/Catalog/Catalog.API`.
 ## Getting Started
 
 ### Prerequisites
-- .NET 8 SDK (or .NET 9)
+- .NET 9 SDK
 - Docker Desktop
-- SQL Server LocalDB (for Identity service)
+- PostgreSQL (for Catalog, Identity, Order services)
+- Redis (for Cart service)
+- RabbitMQ (for event bus)
 
 ### Running Locally
-The easiest way to run the entire stack (Gateway, APIs, RabbitMQ) is via Docker Compose:
+The easiest way to run the entire stack (Gateway, APIs, RabbitMQ, Redis) is via Docker Compose:
 
 ```bash
 docker compose up -d
@@ -42,6 +45,9 @@ docker compose up -d
 - API Gateway: `http://localhost:8080`
 - Catalog API: `http://localhost:5000` (direct access)
 - Identity API: `http://localhost:5001` (direct access)
+- Notification API: `http://localhost:5002` (direct access)
+- Cart API: `http://localhost:5003` (direct access)
+- Order API: `http://localhost:5004` (direct access)
 - RabbitMQ Management: `http://localhost:15672` (guest/guest)
 
 ### Running Individual Services
