@@ -1,5 +1,4 @@
 using System.Threading.RateLimiting;
-using Microsoft.Extensions.Http.Resilience;
 using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,7 +60,7 @@ builder.Services.AddHttpClient("resilient-client")
         
         // Retry with Exponential Backoff
         options.Retry.MaxRetryAttempts = 3;
-        options.Retry.BackoffType = Polly.DelayBackoffType.Exponential; // 2^n seconds
+        options.Retry.BackoffType = DelayBackoffType.Exponential; // 2^n seconds
         options.Retry.UseJitter = true; // Add randomness to prevent thundering herd
         options.Retry.Delay = TimeSpan.FromSeconds(1); // Base delay
         
