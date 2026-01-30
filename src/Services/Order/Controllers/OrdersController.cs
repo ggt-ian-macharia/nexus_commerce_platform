@@ -1,4 +1,6 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Order.DTOs;
 using Order.Models;
 using Order.Services;
 
@@ -9,16 +11,18 @@ namespace Order.Controllers;
 public class OrdersController : ControllerBase
 {
     private readonly IOrderService _orderService;
+    private readonly IMapper _mapper;
     private readonly ILogger<OrdersController> _logger;
 
-    public OrdersController(IOrderService orderService, ILogger<OrdersController> logger)
+    public OrdersController(IOrderService orderService, IMapper mapper, ILogger<OrdersController> logger)
     {
         _orderService = orderService;
+        _mapper = mapper;
         _logger = logger;
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<Models.Order>> GetOrderById(Guid id)
+    public async Task<ActionResult<OrderResponse>> GetOrderById(Guid id)
     {
         var order = await _orderService.GetOrderByIdAsync(id);
         if (order == null)
@@ -26,40 +30,35 @@ public class OrdersController : ControllerBase
             return NotFound(new { Message = $"Order with ID {id} not found" });
         }
 
-        return Ok(order);
+        var response = _mapper.Map<OrderResponse>(order);
+        return Ok(response);
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<ActionResult<IEnumerable<Models.Order>>> GetOrdersByUserId(string userId)
+    public async Task<ActionResult<IEnumerable<OrderResponse>>> GetOrdersByUserId(string userId)
     {
         var orders = await _orderService.GetOrdersByUserIdAsync(userId);
-        return Ok(orders);
+        var response = _mapper.Map<IEnumerable<OrderResponse>>(orders);
+        return Ok(response);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Models.Order>> CreateOrder(CreateOrderRequest request)
+    public async Task<ActionResult<OrderResponse>> CreateOrder(CreateOrderRequest request)
     {
         try
         {
-            var order = new Models.Order
+            var order = _mapper.Map<Models.Order>(request);
+            
+            // Set unique IDs for order items
+            foreach (var item in order.Items)
             {
-                UserId = request.UserId,
-                ShippingAddress = request.ShippingAddress,
-                ShippingCity = request.ShippingCity,
-                ShippingZipCode = request.ShippingZipCode,
-                ShippingCountry = request.ShippingCountry,
-                Items = request.Items.Select(item => new OrderItem
-                {
-                    Id = Guid.NewGuid(),
-                    ProductId = item.ProductId,
-                    ProductName = item.ProductName,
-                    Quantity = item.Quantity,
-                    UnitPrice = item.UnitPrice
-                }).ToList()
-            };
+                item.Id = Guid.NewGuid();
+            }
 
             var createdOrder = await _orderService.CreateOrderAsync(order);
-            return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.Id }, createdOrder);
+            var response = _mapper.Map<OrderResponse>(createdOrder);
+            
+            return CreatedAtAction(nameof(GetOrderById), new { id = response.Id }, response);
         }
         catch (Exception ex)
         {
@@ -69,12 +68,13 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPatch("{id:guid}/status")]
-    public async Task<ActionResult<Models.Order>> UpdateOrderStatus(Guid id, [FromBody] UpdateOrderStatusRequest request)
+    public async Task<ActionResult<OrderResponse>> UpdateOrderStatus(Guid id, [FromBody] UpdateOrderStatusRequest request)
     {
         try
         {
             var updatedOrder = await _orderService.UpdateOrderStatusAsync(id, request.Status);
-            return Ok(updatedOrder);
+            var response = _mapper.Map<OrderResponse>(updatedOrder);
+            return Ok(response);
         }
         catch (KeyNotFoundException)
         {
@@ -110,28 +110,4 @@ public class OrdersController : ControllerBase
             return StatusCode(500, new { Message = "An error occurred while cancelling the order" });
         }
     }
-}
-
-// DTOs
-public class CreateOrderRequest
-{
-    public string UserId { get; set; } = string.Empty;
-    public string ShippingAddress { get; set; } = string.Empty;
-    public string ShippingCity { get; set; } = string.Empty;
-    public string ShippingZipCode { get; set; } = string.Empty;
-    public string ShippingCountry { get; set; } = string.Empty;
-    public List<CreateOrderItemRequest> Items { get; set; } = new();
-}
-
-public class CreateOrderItemRequest
-{
-    public string ProductId { get; set; } = string.Empty;
-    public string ProductName { get; set; } = string.Empty;
-    public int Quantity { get; set; }
-    public decimal UnitPrice { get; set; }
-}
-
-public class UpdateOrderStatusRequest
-{
-    public OrderStatus Status { get; set; }
 }

@@ -1,4 +1,4 @@
-namespace Order.Data;
+namespace Order.Repositories;
 
 public interface IOrderRepository
 {

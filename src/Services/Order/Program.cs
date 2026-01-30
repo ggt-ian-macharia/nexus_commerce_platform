@@ -18,9 +18,11 @@ builder.Services.AddOpenApi();
 // Add Database
 builder.Services.AddDatabase(builder.Configuration);
 
-// Add repositories and services
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderService, OrderService>();
+// Add repositories, services, validators, and mappings
+builder.Services.AddRepositories();
+builder.Services.AddApplicationServices();
+builder.Services.AddValidation();
+builder.Services.AddMappings();
 
 // Add Event Bus
 builder.Services.AddEventBus(builder.Configuration);

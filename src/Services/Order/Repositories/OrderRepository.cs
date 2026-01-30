@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Order.Data;
 
-namespace Order.Data;
+namespace Order.Repositories;
 
 public class OrderRepository : IOrderRepository
 {
