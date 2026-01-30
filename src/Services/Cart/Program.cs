@@ -1,4 +1,4 @@
-using Cart.Data;
+using Cart.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +14,11 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetValue<string>("ConnectionStrings:Redis");
 });
 
-// General Configuration
-builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+// Add repositories, services, validators, and mappings
+builder.Services.AddRepositories();
+builder.Services.AddApplicationServices();
+builder.Services.AddValidation();
+builder.Services.AddMappings();
 
 // Add Health Checks
 builder.Services.AddHealthChecks()
